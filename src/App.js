@@ -66,23 +66,33 @@ class App extends Component {
   render() {
     return (
       <div className='app'>
-        {!this.state.user ?
-        <button onClick={this.login}>Log In</button>   
-         : 
-        <div>
-          <p>Username: {this.state.loggedInUserInfo.name}</p>
-          <p>Email: {this.state.loggedInUserInfo.email}</p>
-          <img src={this.state.loggedInUserInfo.photoURL} />
+        <header>
+          {/* Is user logged in? */}
+          {!this.state.user ?
+          <button onClick={this.login}>Log In</button>   
+          : 
+          <div>
+            <p>Username: {this.state.loggedInUserInfo.name}</p>
+            <p>Email: {this.state.loggedInUserInfo.email}</p>        
+          </div>
+          }     
+        </header>
+        {/* Display content depending on the type of user you are */}
+        {this.isAdmin(this.state.loggedInUserInfo.email) ?
+        <div className='admin'>
+            <p>This is the admin app content.</p>
         </div>
+        : this.isShop(this.state.loggedInUserInfo.email) ?
+        <div className='shop'>
+            <p>This is the shop app content.</p>
+        </div>
+        : this.state.user ?
+        <div className='guide'>
+            <p>This is the guide app content.</p>
+        </div>
+        :
+        <p>Log in please.</p>
         }
-        <div>
-          <p>Your role is:</p>
-          {this.isAdmin(this.state.loggedInUserInfo.email) ?
-          <p>Admin!</p>
-          :
-          <p>pleb...</p>
-          }
-        </div>
       </div>  
     );
   }
