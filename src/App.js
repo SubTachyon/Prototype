@@ -7,30 +7,52 @@ import Shop from './Shop/Shop.js';
 class App extends Component {
   constructor() {
     super();
-    
-    this.constants = {
-      listOfAdmins: [
-        "petr.kudlacek@broadcom.com",        
-        "subtachyon@gmail.com"
-      ],
-      listOfShops: [
-        "subcryptus@gmail.com"
-      ],
-      listOfGuides: [
-        "sublepton@gmail.com"
-      ]
-    }
 
     this.state = {
       loggedInUserInfo: {
         email: '',
         name: '',
-        photoURL: ''
+        photoURL: '',
+        role: ''
       },      
-      user: null
+      user: null,
+      data: []
     }
 
     this.login = this.login.bind(this);
+  }
+
+  //Search database for a user and return his role
+  searchForRole(userEmail, objectArray) {    
+    const result = objectArray.find((element) => {      
+      return element.user === userEmail;      
+    })
+    if (result !== undefined)
+    {
+      return result.role;
+    }
+    else {
+      return "No role found.";
+    }
+  }
+
+  //Connecting to and loading the firebase database into the data[] state
+  componentDidMount() {
+    const itemsRef = firebase.database().ref('users');
+    itemsRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];
+      for (let item in items) {
+        newState.push({
+          id: item,
+          role: items[item].role,
+          user: items[item].user
+        });
+      }
+      this.setState({
+        data: newState
+      });
+    });
   }
 
   login() {
@@ -45,7 +67,8 @@ class App extends Component {
           loggedInUserInfo: {
             email: user.email,
             name: user.displayName,            
-            photoURL: user.photoURL
+            photoURL: user.photoURL,
+            role: this.searchForRole(user.email, this.state.data)
           }
         });         
       });      
@@ -66,11 +89,11 @@ class App extends Component {
           }     
         </header>
         {/* Display content depending on the type of user you are */}
-        {this.constants.listOfAdmins.includes(this.state.loggedInUserInfo.email) ?
+        {this.state.loggedInUserInfo.role == "admin" ?
         <Admin />
-        : this.constants.listOfShops.includes(this.state.loggedInUserInfo.email) ?
+        : this.state.loggedInUserInfo.role == "shop" ?
         <Shop />
-        : this.constants.listOfGuides.includes(this.state.loggedInUserInfo.email) ?
+        : this.state.loggedInUserInfo.role == "guide" ?
         <p>This is the guide app content.</p>
         : this.state.user ?
         <p>Your account is not currently active.</p>
