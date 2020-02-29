@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import firebase, { auth, provider } from './Database/Firebase.js';
+import Admin from './Admin/Admin.js';
+import Shop from './Shop/Shop.js';
 
 class App extends Component {
   constructor() {
@@ -8,11 +10,13 @@ class App extends Component {
     
     this.constants = {
       listOfAdmins: [
-        "petr.kudlacek@broadcom.com",
-        "subcryptus@gmail.com"
+        "petr.kudlacek@broadcom.com",        
+        "subtachyon@gmail.com"
       ],
       listOfShops: [
-        "subtachyon@gmail.com",
+        "subcryptus@gmail.com"
+      ],
+      listOfGuides: [
         "sublepton@gmail.com"
       ]
     }
@@ -43,24 +47,8 @@ class App extends Component {
             name: user.displayName,            
             photoURL: user.photoURL
           }
-        });      
+        });         
       });      
-  }
-
-  isAdmin(email)
-  {
-    if (this.constants.listOfAdmins.includes(email)) {
-      return true;
-    }
-    return false;
-  }
-
-  isShop(email)
-  {
-    if (this.constants.listOfShops.includes(email)) {
-      return true;
-    }
-    return false;
   }
   
   render() {
@@ -78,19 +66,15 @@ class App extends Component {
           }     
         </header>
         {/* Display content depending on the type of user you are */}
-        {this.isAdmin(this.state.loggedInUserInfo.email) ?
-        <div className='admin'>
-            <p>This is the admin app content.</p>
-        </div>
-        : this.isShop(this.state.loggedInUserInfo.email) ?
-        <div className='shop'>
-            <p>This is the shop app content.</p>
-        </div>
+        {this.constants.listOfAdmins.includes(this.state.loggedInUserInfo.email) ?
+        <Admin />
+        : this.constants.listOfShops.includes(this.state.loggedInUserInfo.email) ?
+        <Shop />
+        : this.constants.listOfGuides.includes(this.state.loggedInUserInfo.email) ?
+        <p>This is the guide app content.</p>
         : this.state.user ?
-        <div className='guide'>
-            <p>This is the guide app content.</p>
-        </div>
-        :
+        <p>Your account is not currently active.</p>
+        : 
         <p>Log in please.</p>
         }
       </div>  
