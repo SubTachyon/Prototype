@@ -3,6 +3,7 @@ import './App.css';
 import firebase, { auth, provider } from './Database/Firebase.js';
 import Admin from './Admin/Admin.js';
 import Shop from './Shop/Shop.js';
+import Shopsale from './Shop/Shopsale.js';
 
 class App extends Component {
   state = {
@@ -13,7 +14,9 @@ class App extends Component {
       role: ''
     },      
     user: null,
-    data: []
+    data: [],
+    pendingSaleData: [],
+    saleCreated: false
   }
 
   constructor() {
@@ -45,7 +48,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    //Connecting to and loading the firebase database into the data[] state
+    //Connecting to and loading the firebase database users into the data[] state
     const itemsRef = firebase.database().ref('users');
     itemsRef.on('value', (snapshot) => {
       let items = snapshot.val();
@@ -59,6 +62,24 @@ class App extends Component {
       }
       this.setState({
         data: newState
+      });
+    });
+
+    //Connecting to and loading the firebase database pending sales
+    const itemsPendingSalesRef = firebase.database().ref('pending sales');
+    itemsPendingSalesRef.on('value', (snapshot) => {
+      let items = snapshot.val();
+      let newState = [];      
+      for (let item in items) {
+        newState.push({
+          id: item,
+          code: items[item].code,
+          sum: items[item].sum,
+          user: items[item].user
+        });
+      }
+      this.setState({
+        pendingSaleData: newState
       });
     });
   }  
@@ -110,27 +131,21 @@ class App extends Component {
     itemsRef.push(item);
   }
 
-  // generateSale ( event ) {
-  //   event.preventDefault();
-  //   const itemsRef = firebase.database().ref('pending sales');
-  //   const item = {
-  //     sum: event.target.sum.value,
-  //     code: "666",
-  //     user: "test"
-  //     //user: this.data.email
-  //   }
-  //   itemsRef.push(item);
-  // }
-
   generateSale = ( event ) => {
     event.preventDefault();
     const itemsRef = firebase.database().ref('pending sales');
     const item = {
       sum: event.target.sum.value,
-      code: "666",
+      code: Math.random().toString(36).substring(4),
       user: this.state.loggedInUserInfo.email
     }
-    itemsRef.push(item);
+    if (event.target.sum.value > 0)
+    {
+      itemsRef.push(item);
+      this.setState({
+        saleCreated: true
+      });
+    }    
   }
   
   render() {
@@ -154,7 +169,12 @@ class App extends Component {
         {this.state.loggedInUserInfo.role == "admin" ?
         <Admin data={this.state.data} listUsersByRole={this.listUsersByRole} submit={this.addUserHandler} />
         : this.state.loggedInUserInfo.role == "shop" ?
-        <Shop generateSale={this.generateSale} />
+          [
+          (this.state.saleCreated === false ?
+          <Shop generateSale={this.generateSale} />
+          : <Shopsale data={this.state.data} pendingSaleData={this.state.pendingSaleData} />
+          )]
+
         : this.state.loggedInUserInfo.role == "guide" ?
         <p>This is the guide app content.</p>
         : this.state.user ?
