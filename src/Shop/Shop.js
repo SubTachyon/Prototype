@@ -1,10 +1,15 @@
 import React from 'react';
 
 const Shop = ( props ) => {
+
     return (
         <div className='shop'>
-            <p>This is the shop app content.</p>
-            <input type="text" placeholder="Kolik byla utrata?"/>
+            <p>New transaction</p>
+            <form onSubmit={props.generateSale}>
+                <input type="number" name="sum" placeholder="How much was spent?" /> CZK
+                <br /><button>Generate Sale</button>
+            </form>
+
         </div>
     )
 };

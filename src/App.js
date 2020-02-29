@@ -109,6 +109,29 @@ class App extends Component {
     }
     itemsRef.push(item);
   }
+
+  // generateSale ( event ) {
+  //   event.preventDefault();
+  //   const itemsRef = firebase.database().ref('pending sales');
+  //   const item = {
+  //     sum: event.target.sum.value,
+  //     code: "666",
+  //     user: "test"
+  //     //user: this.data.email
+  //   }
+  //   itemsRef.push(item);
+  // }
+
+  generateSale = ( event ) => {
+    event.preventDefault();
+    const itemsRef = firebase.database().ref('pending sales');
+    const item = {
+      sum: event.target.sum.value,
+      code: "666",
+      user: this.state.loggedInUserInfo.email
+    }
+    itemsRef.push(item);
+  }
   
   render() {
     return (
@@ -131,7 +154,7 @@ class App extends Component {
         {this.state.loggedInUserInfo.role == "admin" ?
         <Admin data={this.state.data} listUsersByRole={this.listUsersByRole} submit={this.addUserHandler} />
         : this.state.loggedInUserInfo.role == "shop" ?
-        <Shop />
+        <Shop generateSale={this.generateSale} />
         : this.state.loggedInUserInfo.role == "guide" ?
         <p>This is the guide app content.</p>
         : this.state.user ?
