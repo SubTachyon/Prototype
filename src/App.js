@@ -172,7 +172,7 @@ class App extends Component {
           [
           (this.state.saleCreated === false ?
           <Shop generateSale={this.generateSale} />
-          : <Shopsale data={this.state.data} pendingSaleData={this.state.pendingSaleData} />
+          : <Shopsale loggedInUserInfo={this.state.loggedInUserInfo} pendingSaleData={this.state.pendingSaleData} />
           )]
 
         : this.state.loggedInUserInfo.role == "guide" ?
