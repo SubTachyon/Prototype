@@ -19,6 +19,7 @@ class App extends Component {
   constructor() {
     super();
     this.login = this.login.bind(this);
+    this.addAdminUserHandler = this.addAdminUserHandler.bind(this);
   }
 
   //Search database for a user and return his role
@@ -34,6 +35,38 @@ class App extends Component {
       return "No role found.";
     }
   }
+
+  //List database users based on role
+  listUsersByRole0(role, objectArray) {
+    const result = objectArray.filter((element) => {      
+      return element.role === role;      
+    })
+    if (result !== undefined)
+    {
+      return result.user;
+    }
+    else {
+      return "No users found.";
+    }
+  }
+
+  listUsersByRole(role, objectArray) {
+    //const result = objectArray.filter((item) => item.role == role).map(({user}) => ({user}));
+    //console.log(result);
+    
+    // const result = objectArray.filter((element) => {      
+    //   return element.role === role;      
+    // })
+    // if (result !== undefined)
+    // {
+    //   return result.user;
+    // }
+    // else {
+    //   return "No users found.";
+    // }
+  }
+
+  //console.log(data);
 
   //Connecting to and loading the firebase database into the data[] state
   componentDidMount() {
@@ -52,7 +85,7 @@ class App extends Component {
         data: newState
       });
     });
-  }
+  }  
 
   login() {
     auth.signInWithPopup(provider) 
@@ -72,6 +105,17 @@ class App extends Component {
         });         
       });      
   }
+
+  addAdminUserHandler( event ) {
+    event.preventDefault();
+    const itemsRef = firebase.database().ref('users');
+    const item = {
+      role: event.target.role.value,
+      user: event.target.user.value
+      //user: event.target.value
+    }
+    itemsRef.push(item);
+  }
   
   render() {
     return (
@@ -89,7 +133,7 @@ class App extends Component {
         </header>
         {/* Display content depending on the type of user you are */}
         {this.state.loggedInUserInfo.role == "admin" ?
-        <Admin data={this.state.data} searchForRole={this.searchForRole} />
+        <Admin data={this.state.data} listUsersByRole={this.listUsersByRole} submit={this.addAdminUserHandler} />
         : this.state.loggedInUserInfo.role == "shop" ?
         <Shop />
         : this.state.loggedInUserInfo.role == "guide" ?
