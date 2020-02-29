@@ -5,20 +5,19 @@ import Admin from './Admin/Admin.js';
 import Shop from './Shop/Shop.js';
 
 class App extends Component {
+  state = {
+    loggedInUserInfo: {
+      email: '',
+      name: '',
+      photoURL: '',
+      role: ''
+    },      
+    user: null,
+    data: []
+  }
+
   constructor() {
     super();
-
-    this.state = {
-      loggedInUserInfo: {
-        email: '',
-        name: '',
-        photoURL: '',
-        role: ''
-      },      
-      user: null,
-      data: []
-    }
-
     this.login = this.login.bind(this);
   }
 
@@ -90,7 +89,7 @@ class App extends Component {
         </header>
         {/* Display content depending on the type of user you are */}
         {this.state.loggedInUserInfo.role == "admin" ?
-        <Admin />
+        <Admin data={this.state.data} searchForRole={this.searchForRole} />
         : this.state.loggedInUserInfo.role == "shop" ?
         <Shop />
         : this.state.loggedInUserInfo.role == "guide" ?
