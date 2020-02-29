@@ -18,8 +18,8 @@ class App extends Component {
 
   constructor() {
     super();
-    this.login = this.login.bind(this);
-    this.addAdminUserHandler = this.addAdminUserHandler.bind(this);
+    this.login = this.login.bind(this);   
+    this.logout = this.logout.bind(this);    
   }
 
   //Search database for a user and return his role
@@ -36,40 +36,16 @@ class App extends Component {
     }
   }
 
-  //List database users based on role
-  listUsersByRole0(role, objectArray) {
-    const result = objectArray.filter((element) => {      
-      return element.role === role;      
-    })
-    if (result !== undefined)
-    {
-      return result.user;
-    }
-    else {
-      return "No users found.";
-    }
+  listUsersByRole(role) {
+    this.state.data.map((item) => {
+      return (
+      <p>{item.user}</p>
+      )
+  })
   }
 
-  listUsersByRole(role, objectArray) {
-    //const result = objectArray.filter((item) => item.role == role).map(({user}) => ({user}));
-    //console.log(result);
-    
-    // const result = objectArray.filter((element) => {      
-    //   return element.role === role;      
-    // })
-    // if (result !== undefined)
-    // {
-    //   return result.user;
-    // }
-    // else {
-    //   return "No users found.";
-    // }
-  }
-
-  //console.log(data);
-
-  //Connecting to and loading the firebase database into the data[] state
   componentDidMount() {
+    //Connecting to and loading the firebase database into the data[] state
     const itemsRef = firebase.database().ref('users');
     itemsRef.on('value', (snapshot) => {
       let items = snapshot.val();
@@ -106,13 +82,30 @@ class App extends Component {
       });      
   }
 
-  addAdminUserHandler( event ) {
+  logout() {
+    auth.signOut()
+      .then(() => {
+        this.setState({
+          user: null
+        });
+      });
+      //Wipe state clean
+      this.setState({
+        loggedInUserInfo: {
+          email: '',
+          name: '',
+          photoURL: '',
+          role: ''
+        }
+      });
+  }
+
+  addUserHandler( event ) {
     event.preventDefault();
     const itemsRef = firebase.database().ref('users');
     const item = {
       role: event.target.role.value,
       user: event.target.user.value
-      //user: event.target.value
     }
     itemsRef.push(item);
   }
@@ -123,9 +116,12 @@ class App extends Component {
         <header>
           {/* Is user logged in? */}
           {!this.state.user ?
-          <button onClick={this.login}>Log In</button>   
-          : 
           <div>
+            <button onClick={this.login}>Log In</button>
+          </div>          
+          :           
+          <div>
+            <button onClick={this.logout}>Log Out</button> 
             <p>Username: {this.state.loggedInUserInfo.name}</p>
             <p>Email: {this.state.loggedInUserInfo.email}</p>        
           </div>
@@ -133,7 +129,7 @@ class App extends Component {
         </header>
         {/* Display content depending on the type of user you are */}
         {this.state.loggedInUserInfo.role == "admin" ?
-        <Admin data={this.state.data} listUsersByRole={this.listUsersByRole} submit={this.addAdminUserHandler} />
+        <Admin data={this.state.data} listUsersByRole={this.listUsersByRole} submit={this.addUserHandler} />
         : this.state.loggedInUserInfo.role == "shop" ?
         <Shop />
         : this.state.loggedInUserInfo.role == "guide" ?
