@@ -18,7 +18,10 @@ class App extends Component {
     user: null,
     data: [],
     pendingSaleData: [],
-    saleCreated: false
+    saleCreated: false,
+    saleFound: false,
+    saleFoundSum: '',
+    saleFoundShopUser: ''
   }
 
   constructor() {
@@ -153,9 +156,16 @@ class App extends Component {
   checkSale = ( event ) => {
     event.preventDefault();
     this.state.pendingSaleData.map((element) => { 
-      return element.code === event.target.code.value ?
-      element.sum
-      : "";
+      if (element.code === event.target.code.value) {
+        this.setState({
+          saleFound: true
+        });
+        return element.sum;
+      }
+      else
+      {
+        return "";
+      }
     })    
   }
   
@@ -188,7 +198,12 @@ class App extends Component {
           )]
 
         : this.state.loggedInUserInfo.role == "guide" ?
-        <Guide checkSale={this.checkSale} />
+          [
+          (this.state.saleFound === false ?
+            <Guide checkSale={this.checkSale} />
+            :
+            <GuideCheckSale />
+          )]
         : this.state.user ?
         <p>Your account is not currently active.</p>
         : 
