@@ -7,7 +7,7 @@ const GuideCheckSale = ( props ) => {
             <p>Sale found.</p>
             <p>Created by: {props.saleFoundShopUser}</p>
             <p>Sum: {props.saleFoundSum} CZK</p>
-            <button>Reject</button><button>Accept</button>
+            <button onClick={props.rejectSale} >Reject</button> <button onClick={props.acceptSale} >Accept</button>
         </div>
     )
 };

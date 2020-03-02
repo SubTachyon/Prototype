@@ -170,6 +170,12 @@ class App extends Component {
       }
     })    
   }
+
+  acceptSale = ( event ) => {
+  }
+
+  rejectSale = ( event ) => {
+  }
   
   render() {
     return (
@@ -204,7 +210,7 @@ class App extends Component {
           (this.state.saleFound === false ?
             <Guide checkSale={this.checkSale} />
             :
-            <GuideCheckSale pendingSaleData={this.state.pendingSaleData} saleFoundSum={this.state.saleFoundSum} saleFoundShopUser={this.state.saleFoundShopUser} />
+            <GuideCheckSale pendingSaleData={this.state.pendingSaleData} saleFoundSum={this.state.saleFoundSum} saleFoundShopUser={this.state.saleFoundShopUser} acceptSale={this.acceptSale} rejectSale={this.rejectSale} />
           )]
         : this.state.user ?
         <p>Your account has not been activated.</p>
