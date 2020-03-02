@@ -105,7 +105,7 @@ class App extends Component {
             role: this.searchForRole(user.email, this.state.data)
           }        
         });    
-        this.checkSale();     
+        this.checkPendingSale();     
       });      
   }
 
@@ -172,7 +172,7 @@ class App extends Component {
     })    
   }
 
-  checkSale = () => {
+  checkPendingSale = () => {
     this.state.pendingSaleData.map((element) => { 
       if (element.user === this.state.loggedInUserInfo.email) {
         this.setState({
