@@ -19,6 +19,7 @@ class App extends Component {
     data: [],
     pendingSaleData: [],
     saleCreated: false,
+    saleID: '', //implement to make stuff (re)movable
     saleFound: false,
     saleFoundSum: '',
     saleFoundShopUser: ''
@@ -215,7 +216,7 @@ class App extends Component {
         </header>
         {/* Display content depending on the type of user you are */}
         {this.state.loggedInUserInfo.role == "admin" ?
-        <Admin data={this.state.data} listUsersByRole={this.listUsersByRole} submit={this.addUserHandler} />
+        <Admin data={this.state.data} submit={this.addUserHandler} />
         : this.state.loggedInUserInfo.role == "shop" ?
           [
           (this.state.saleCreated === false ?
