@@ -4,6 +4,8 @@ import firebase, { auth, provider } from './Database/Firebase.js';
 import Admin from './Admin/Admin.js';
 import Shop from './Shop/Shop.js';
 import Shopsale from './Shop/Shopsale.js';
+import Guide from './Guide/Guide.js';
+import GuideCheckSale from './Guide/GuideCheckSale.js';
 
 class App extends Component {
   state = {
@@ -147,6 +149,15 @@ class App extends Component {
       });
     }    
   }
+
+  checkSale = ( event ) => {
+    event.preventDefault();
+    this.state.pendingSaleData.map((element) => { 
+      return element.code === event.target.code.value ?
+      element.sum
+      : "";
+    })    
+  }
   
   render() {
     return (
@@ -172,11 +183,12 @@ class App extends Component {
           [
           (this.state.saleCreated === false ?
           <Shop generateSale={this.generateSale} />
-          : <Shopsale loggedInUserInfo={this.state.loggedInUserInfo} pendingSaleData={this.state.pendingSaleData} />
+          : 
+          <Shopsale loggedInUserInfo={this.state.loggedInUserInfo} pendingSaleData={this.state.pendingSaleData} />
           )]
 
         : this.state.loggedInUserInfo.role == "guide" ?
-        <p>This is the guide app content.</p>
+        <Guide checkSale={this.checkSale} />
         : this.state.user ?
         <p>Your account is not currently active.</p>
         : 
