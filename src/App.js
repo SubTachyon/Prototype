@@ -103,8 +103,9 @@ class App extends Component {
             name: user.displayName,            
             photoURL: user.photoURL,
             role: this.searchForRole(user.email, this.state.data)
-          }
-        });         
+          }        
+        });    
+        this.checkSale();     
       });      
   }
 
@@ -171,6 +172,24 @@ class App extends Component {
     })    
   }
 
+  checkSale = () => {
+    this.state.pendingSaleData.map((element) => { 
+      if (element.user === this.state.loggedInUserInfo.email) {
+        this.setState({
+          saleCreated: true
+        });
+        return "";
+      }
+      else
+      {
+        return "";
+      }
+    })    
+  }
+
+  cancelSale = ( event ) => {
+  }
+
   acceptSale = ( event ) => {
   }
 
@@ -202,7 +221,7 @@ class App extends Component {
           (this.state.saleCreated === false ?
           <Shop generateSale={this.generateSale} />
           : 
-          <Shopsale loggedInUserInfo={this.state.loggedInUserInfo} pendingSaleData={this.state.pendingSaleData} />
+          <Shopsale loggedInUserInfo={this.state.loggedInUserInfo} pendingSaleData={this.state.pendingSaleData} cancelSale={this.cancelSale}/>
           )]
 
         : this.state.loggedInUserInfo.role == "guide" ?

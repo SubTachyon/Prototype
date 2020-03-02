@@ -1,9 +1,10 @@
 import React from 'react';
+import './Shop.css';
 
 const Shop = ( props ) => {
 
     return (
-        <div className='shop'>
+        <div className='center'>
             <p>New transaction</p>
             <form onSubmit={props.generateSale}>
                 <input type="number" name="sum" placeholder="How much was spent?" /> CZK
