@@ -158,9 +158,11 @@ class App extends Component {
     this.state.pendingSaleData.map((element) => { 
       if (element.code === event.target.code.value) {
         this.setState({
-          saleFound: true
+          saleFound: true,
+          saleFoundSum: element.sum,
+          saleFoundShopUser: element.user
         });
-        return element.sum;
+        return "";
       }
       else
       {
@@ -202,10 +204,10 @@ class App extends Component {
           (this.state.saleFound === false ?
             <Guide checkSale={this.checkSale} />
             :
-            <GuideCheckSale />
+            <GuideCheckSale pendingSaleData={this.state.pendingSaleData} saleFoundSum={this.state.saleFoundSum} saleFoundShopUser={this.state.saleFoundShopUser} />
           )]
         : this.state.user ?
-        <p>Your account is not currently active.</p>
+        <p>Your account has not been activated.</p>
         : 
         <p>Log in please.</p>
         }
