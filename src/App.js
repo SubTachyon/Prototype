@@ -237,8 +237,9 @@ class App extends Component {
   
   render() {
     return (
-      <div className='app'>
+      <div className='app buttonHolder'>
         <header>
+          <h1 align="center">App Prototype</h1>      
           {/* Is user logged in? */}
           {!this.state.user ?
           <div>
@@ -247,8 +248,12 @@ class App extends Component {
           :           
           <div>
             <button onClick={this.logout}>Log Out</button> 
-            <p>Username: {this.state.loggedInUserInfo.name}</p>
-            <p>Email: {this.state.loggedInUserInfo.email}</p>        
+            <table width="100%">
+            <tr>
+              <td align="right" width="50%">{this.state.loggedInUserInfo.name}<br />{this.state.loggedInUserInfo.email}<br /><b>Account type:</b> {this.state.loggedInUserInfo.role}</td>
+              <td width="50%"><img src={this.state.loggedInUserInfo.photoURL} /></td>
+            </tr>
+          </table>         
           </div>
           }     
         </header>
