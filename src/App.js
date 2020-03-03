@@ -164,7 +164,7 @@ class App extends Component {
           saleFound: true,
           saleFoundSum: element.sum,
           saleFoundShopUser: element.user,
-          saleFoundCode: event.target.code.value
+          saleFoundCode: element.code
         });
         return "";
       }
@@ -204,12 +204,12 @@ class App extends Component {
   acceptSale = ( event ) => {
     //find the pending sale
     this.state.pendingSaleData.map((element) => { 
-      if (element.code === this.status.saleFoundCode) {
+      if (element.code === this.state.saleFoundCode) {
         //create new entry in confirmed sales
         const itemsRef = firebase.database().ref('confirmed sales');
         const item = {
-          sum: event.target.sum.value,
-          user: this.status.saleFoundShopUser,
+          sum: this.state.saleFoundSum,
+          user: this.state.saleFoundShopUser,
           signedBy: this.state.loggedInUserInfo.email
         }
         itemsRef.push(item);
