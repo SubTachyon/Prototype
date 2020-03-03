@@ -22,7 +22,8 @@ class App extends Component {
     saleID: '', //implement to make stuff (re)movable
     saleFound: false,
     saleFoundSum: '',
-    saleFoundShopUser: ''
+    saleFoundShopUser: '',
+    saleFoundCode: ''
   }
 
   constructor() {
@@ -162,7 +163,8 @@ class App extends Component {
         this.setState({
           saleFound: true,
           saleFoundSum: element.sum,
-          saleFoundShopUser: element.user
+          saleFoundShopUser: element.user,
+          saleFoundCode: event.target.code.value
         });
         return "";
       }
@@ -202,8 +204,15 @@ class App extends Component {
   acceptSale = ( event ) => {
     //find the pending sale
     this.state.pendingSaleData.map((element) => { 
-      if (element.user === this.status.saleFoundShopUser) {
+      if (element.code === this.status.saleFoundCode) {
         //create new entry in confirmed sales
+        const itemsRef = firebase.database().ref('confirmed sales');
+        const item = {
+          sum: event.target.sum.value,
+          user: this.status.saleFoundShopUser,
+          signedBy: this.state.loggedInUserInfo.email
+        }
+        itemsRef.push(item);
       }
     })
 
