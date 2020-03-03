@@ -252,29 +252,31 @@ class App extends Component {
           </div>
           }     
         </header>
-        {/* Display content depending on the type of user you are */}
-        {this.state.loggedInUserInfo.role == "admin" ?
-        <Admin data={this.state.data} submit={this.addUserHandler} />
-        : this.state.loggedInUserInfo.role == "shop" ?
-          [
-          (this.state.saleCreated === false ?
-          <Shop generateSale={this.generateSale} />
-          : 
-          <Shopsale loggedInUserInfo={this.state.loggedInUserInfo} pendingSaleData={this.state.pendingSaleData} cancelSale={this.cancelSale}/>
-          )]
+        <div className="centered">
+          {/* Display content depending on the type of user you are */}
+          {this.state.loggedInUserInfo.role == "admin" ?
+          <Admin data={this.state.data} submit={this.addUserHandler} />
+          : this.state.loggedInUserInfo.role == "shop" ?
+            [
+            (this.state.saleCreated === false ?
+            <Shop generateSale={this.generateSale} />
+            : 
+            <Shopsale loggedInUserInfo={this.state.loggedInUserInfo} pendingSaleData={this.state.pendingSaleData} cancelSale={this.cancelSale}/>
+            )]
 
-        : this.state.loggedInUserInfo.role == "guide" ?
-          [
-          (this.state.saleFound === false ?
-            <Guide checkSale={this.checkSale} />
-            :
-            <GuideCheckSale pendingSaleData={this.state.pendingSaleData} saleFoundSum={this.state.saleFoundSum} saleFoundShopUser={this.state.saleFoundShopUser} acceptSale={this.acceptSale} rejectSale={this.rejectSale} />
-          )]
-        : this.state.user ?
-        <p>Your account has not been activated.</p>
-        : 
-        <p>Log in please.</p>
-        }
+          : this.state.loggedInUserInfo.role == "guide" ?
+            [
+            (this.state.saleFound === false ?
+              <Guide checkSale={this.checkSale} />
+              :
+              <GuideCheckSale pendingSaleData={this.state.pendingSaleData} saleFoundSum={this.state.saleFoundSum} saleFoundShopUser={this.state.saleFoundShopUser} acceptSale={this.acceptSale} rejectSale={this.rejectSale} />
+            )]
+          : this.state.user ?
+          <p>Your account has not been activated.</p>
+          : 
+          <p>Log in please.</p>
+          }
+        </div>
       </div>  
     );
   }

@@ -1,5 +1,4 @@
 import React from 'react';
-import './Shop.css';
 
 const Shopsale = ( props ) => {
 
