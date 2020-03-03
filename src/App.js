@@ -188,13 +188,42 @@ class App extends Component {
     })    
   }
 
+  //change this, right now it deletes ALL pending sales
   cancelSale = ( event ) => {
+    const itemRef = firebase.database().ref(`/pending sales/`);
+    itemRef.remove(); 
+    this.setState({
+      saleCreated: false,
+      saleFound: false
+    });  
   }
 
+  //change this
   acceptSale = ( event ) => {
+    //find the pending sale
+    this.state.pendingSaleData.map((element) => { 
+      if (element.user === this.status.saleFoundShopUser) {
+        //create new entry in confirmed sales
+      }
+    })
+
+    //delete pending sales
+    const itemRef = firebase.database().ref(`/pending sales/`);
+    itemRef.remove(); 
+    this.setState({
+      saleCreated: false,
+      saleFound: false
+    });  
   }
 
+  //change this, right now it deletes ALL pending sales
   rejectSale = ( event ) => {
+    const itemRef = firebase.database().ref(`/pending sales/`);
+    itemRef.remove(); 
+    this.setState({
+      saleCreated: false,
+      saleFound: false
+    });  
   }
   
   render() {
