@@ -1,4 +1,5 @@
 import React from 'react';
+import QRCode from 'react-google-qrcode';
 
 const Shopsale = ( props ) => {
 
@@ -10,6 +11,11 @@ const Shopsale = ( props ) => {
                         <h3>The guide needs to confirm the sale:</h3>
                         <li>Sum: {element.sum} CZK</li> 
                         <li>Confirmation code: {element.code}</li> 
+                        <div className="centered">
+                        <QRCode
+                            data={element.code}
+                            framed
+                        /></div>
                         <button onClick={props.cancelSale} >Cancel</button>
                     </div> 
                     : "No pending sale was found."; 
