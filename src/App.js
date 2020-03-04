@@ -23,13 +23,25 @@ class App extends Component {
     saleFound: false,
     saleFoundSum: '',
     saleFoundShopUser: '',
-    saleFoundCode: ''
+    saleFoundCode: '',
+    qrResult: 'QR code not recognized'
   }
 
   constructor() {
     super();
     this.login = this.login.bind(this);   
     this.logout = this.logout.bind(this);    
+  }
+
+  handleQRScan = data => {
+    if (data) {
+      this.setState({
+        result: data
+      })
+    }
+  }
+  handleQRError = err => {
+    console.error(err)
   }
 
   //Search database for a user and return his role
@@ -239,7 +251,7 @@ class App extends Component {
     return (
       <div className='app buttonHolder'>
         <header>
-          <h1 align="center">App Prototype</h1>      
+          <h1 align="center">App Prototype</h1>                
           {/* Is user logged in? */}
           {!this.state.user ?
           <div>
@@ -272,7 +284,7 @@ class App extends Component {
           : this.state.loggedInUserInfo.role == "guide" ?
             [
             (this.state.saleFound === false ?
-              <Guide checkSale={this.checkSale} />
+              <Guide checkSale={this.checkSale} qrResult={this.state.qrResult} handleQRError={this.handleQRError} handleQRScan={this.handleQRScan}/>
               :
               <GuideCheckSale pendingSaleData={this.state.pendingSaleData} saleFoundSum={this.state.saleFoundSum} saleFoundShopUser={this.state.saleFoundShopUser} acceptSale={this.acceptSale} rejectSale={this.rejectSale} />
             )]

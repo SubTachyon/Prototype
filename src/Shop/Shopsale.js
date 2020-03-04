@@ -9,8 +9,8 @@ const Shopsale = ( props ) => {
                     return element.user === props.loggedInUserInfo.email ? 
                     <div>
                         <h3>The guide needs to confirm the sale:</h3>
-                        <li>Sum: {element.sum} CZK</li> 
-                        <li>Confirmation code: {element.code}</li> 
+                        <p>Sum: {element.sum} CZK</p> 
+                        <p>Confirmation code: {element.code}</p> 
                         <div className="centered">
                         <QRCode
                             data={element.code}

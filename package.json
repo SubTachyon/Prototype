@@ -10,6 +10,7 @@
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-google-qrcode": "^1.0.3",
+    "react-qr-reader": "^2.2.1",
     "react-scripts": "3.4.0"
   },
   "scripts": {
