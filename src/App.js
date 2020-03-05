@@ -36,7 +36,7 @@ class App extends Component {
   handleQRScan = data => {
     if (data) {
       this.setState({
-        result: data
+        qrResult: data
       })
     }
   }
